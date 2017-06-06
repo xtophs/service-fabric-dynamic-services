@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@using LogViewService.Shared.SFLogger;
+@using Microsoft.ServiceFabric.Services.Remoting;
+@using Microsoft.ServiceFabric.Services.Remoting.Client;
+
+<h2>Log Entries</h2>
+
+@{
+    var logClient = ServiceProxy.Create<ILogService>(new Uri("fabric:/LogKeeper/LogViewService"));
+    var entries = logClient.GetLogEntries().Result;
+    foreach (var e in entries.Reverse().OrderByDescending( e => e.timestamp).Take(20))
+    {
+        <div class="row">
+
+            <div class="col-md-1">
+                <ul>
+                    @e.timestamp.ToString("HH:mm:ss.fff") 
+                </ul>
+            </div>
+            <div class="col-md-10">
+                <ul>
+                    @e.text
+                </ul>
+            </div>
+        </div>
+
+    }
+}

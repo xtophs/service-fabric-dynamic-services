@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ApplicationManifest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ApplicationTypeName="Compute2Type" ApplicationTypeVersion="1.0.0" xmlns="http://schemas.microsoft.com/2011/01/fabric">
+  <Parameters>
+    <Parameter Name="PartitionedComputeService_MinReplicaSetSize" DefaultValue="2" />
+    <Parameter Name="PartitionedComputeService_PartitionCount" DefaultValue="3" />
+    <Parameter Name="PartitionedComputeService_TargetReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="KeepAliveService_InstanceCount" DefaultValue="-1" />
+  </Parameters>
+  <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="StatefulComputeServicePkg" ServiceManifestVersion="1.0.0" />
+    <ConfigOverrides />
+  </ServiceManifestImport>
+  <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="PartitionedComputeServicePkg" ServiceManifestVersion="1.0.0" />
+    <ConfigOverrides />
+  </ServiceManifestImport>
+  <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="StatelessComputeServicePkg" ServiceManifestVersion="1.0.0" />
+    <ConfigOverrides />
+  </ServiceManifestImport>
+  <DefaultServices>
+    <Service Name="PartitionedComputeService">
+      <StatefulService ServiceTypeName="PartitionedComputeServiceType" TargetReplicaSetSize="[PartitionedComputeService_TargetReplicaSetSize]" MinReplicaSetSize="[PartitionedComputeService_MinReplicaSetSize]">
+        <UniformInt64Partition PartitionCount="[PartitionedComputeService_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
+      </StatefulService>
+    </Service>
+    <!--<Service Name="KeepAliveService">
+      <StatelessService ServiceTypeName="KeepAliveServiceType" InstanceCount="[KeepAliveService_InstanceCount]">
+        <SingletonPartition />
+      </StatelessService>
+    </Service>-->
+  </DefaultServices>
+</ApplicationManifest>

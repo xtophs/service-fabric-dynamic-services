@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ServiceManifest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Name="SchedulerService" Version="1.0.0" xmlns="http://schemas.microsoft.com/2011/01/fabric">
+  <ServiceTypes>
+    <StatelessServiceType ServiceTypeName="DynamicSchedulerType" />
+
+    <!--<StatefulServiceType ServiceTypeName="DynamicSchedulerType" HasPersistedState="true" />
+    <StatefulServiceType ServiceTypeName="StaticSchedulerType" HasPersistedState="true" />-->
+
+  </ServiceTypes>
+
+  <CodePackage Name="Code" Version="1.0.0">
+    <EntryPoint>
+      <ExeHost>
+        <Program>Counter.exe</Program>
+        <WorkingFolder>CodePackage</WorkingFolder>
+        <ConsoleRedirection FileRetentionCount="5" FileMaxSizeInKb="2048" />
+      </ExeHost>
+    </EntryPoint>
+  </CodePackage>
+  <Resources>
+    <Endpoints>
+      <Endpoint Name="SchedulerTypeEndpoint" Protocol="http" Type="Input"   />
+     <!--<Endpoint Name="StaticSchedulerTypeEndpoint" Protocol="http" Type="Input" Port="8083"  />-->
+    </Endpoints>
+  </Resources>
+</ServiceManifest>

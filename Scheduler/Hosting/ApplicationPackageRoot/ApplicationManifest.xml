@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ApplicationManifest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ApplicationTypeName="SchedulerAppType" ApplicationTypeVersion="1.0.0" xmlns="http://schemas.microsoft.com/2011/01/fabric">
+  <Parameters>
+    <Parameter Name="Scaler_InstanceCount" DefaultValue="-1" />
+    <Parameter Name="StaticScheduler_InstanceCount" DefaultValue="-1" />
+    <Parameter Name="Scheduler_TargetReplicaSetSize" DefaultValue="1" />
+    <Parameter Name="Scheduler_MinReplicaSetSize" DefaultValue="1" />
+    <Parameter Name="Scheduler_PartitionCount" DefaultValue="1" />
+  </Parameters>
+  <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="Ncsa.Services.StaticSchedulerPkg" ServiceManifestVersion="1.0.0" />
+    <ConfigOverrides />
+  </ServiceManifestImport>
+  <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="SchedulerService" ServiceManifestVersion="1.0.0" />
+  </ServiceManifestImport>
+  <DefaultServices>
+    <Service Name="StaticScheduler">
+      <StatelessService ServiceTypeName="StaticSchedulerType" InstanceCount="[StaticScheduler_InstanceCount]">
+        <SingletonPartition />
+      </StatelessService>
+    </Service>
+    <Service Name="DynamicSchedulerService">
+      <StatelessService ServiceTypeName="DynamicSchedulerType" InstanceCount="[StaticScheduler_InstanceCount]">
+        <SingletonPartition />
+      </StatelessService>
+    </Service>
+  </DefaultServices>
+</ApplicationManifest>
